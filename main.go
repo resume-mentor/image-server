@@ -27,6 +27,10 @@ func uploadImg(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Failed to upload image. Error: %s", err.Error())
 		return
 	}
+	if file.Size > 1024*1024*5 {
+		c.String(http.StatusBadRequest, "File is too big")
+		return
+	}
 
 	err = c.SaveUploadedFile(file, "./images/"+file.Filename)
 	if err != nil {
